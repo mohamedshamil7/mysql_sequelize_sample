@@ -38,8 +38,8 @@ const  user = connection.define('User',{
   });
 
   user.addHook('beforeCreate',async (user)=>{
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(user.password,2);
+    console.log(user.password);
   })
 
 
@@ -79,6 +79,48 @@ const  user = connection.define('User',{
           }
     }
 
+    const findUser = async (userData)=>{
+        try{
+            const userDetails= await  user.findOne({
+                where:{
+                    email:userData.email
+                }
+            })
+            if(userDetails==null){
+                console.log("email null");
+                throw new Error("user Not found with the given email id")
+            }else{
+                // console.log(userDetails);
+                console.log("All users:", JSON.stringify(userDetails, null, 2)); 
+                return JSON.stringify(userDetails, null, 2)
+            }
+
+        } 
+        catch(e){
+            console.log("email notgot");
+            throw new Error(e)
+        }
+  // .then((userDetails)=>{
+            //     console.log("email got");
+               
+            // }).catch((e)=>{
+            //     
+            //     // console.error(e,"eeeeeeee");
+            //    throw new Error(e)
+            // })   
+    }
 
 
-    module.exports={createNewUser,findIfUserExists}
+    const confirmPassword= async (userDetails,user)=>{
+        console.log(typeof userDetails.password);
+        console.log(typeof user.password);
+        userDetails.password = userDetails.password.trim()
+        user.password= user.password.trim()
+       const result = await bcrypt.compare(user.password,userDetails.password)
+        if(result) return true
+        else return false
+    }
+
+
+
+    module.exports={createNewUser,findIfUserExists,findUser,confirmPassword}
