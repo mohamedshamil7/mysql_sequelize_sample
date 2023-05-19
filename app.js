@@ -6,18 +6,15 @@ var logger = require('morgan');
 var http = require('http');
 var debug = require('debug')('mysqlnode:server');
 var usersRouter = require('./routes/users');
-const { Sequelize } = require('sequelize');
-require("dotenv").config()
-
-
-const sequelize = new Sequelize(process.env.dbName, process.env.username, process.env.password, {
-  dialect:'mysql' 
-})
+const connection= require("./config/db")
+const synchronize_All_Models = require("./config/tables")
 const  authenticate_sequelize =async()=>{
 try {
     
-  await sequelize.authenticate();
+  await connection.authenticate();
   console.log('Connection has been established successfully.');
+  await synchronize_All_Models()
+
 } catch (error) {
   console.error('Unable to connect to the database:', error);
 }
@@ -29,7 +26,7 @@ var app = express();
 
 var server = http.createServer(app);
 // var port = normalizePort(process.env.PORT || '3000');
-var port= '3000'
+var port= '3001'
 // app.set('port', port);
 
 
