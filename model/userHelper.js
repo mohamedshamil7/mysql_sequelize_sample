@@ -152,7 +152,7 @@ const confirmPassword = async (userDetails, user) => {
 const allProducts= async()=>{
     const products = await product.findAll();
     console.log(products);
-    return products
+    return JSON.stringify(products)
 }
 
 const createProduct= async(name,price)=>{
@@ -179,5 +179,28 @@ const createProduct= async(name,price)=>{
     
 }
 
+const getSingleProductHelper=async(id)=>{
+    try{
+        const singelproduct = await product.findOne({
+            where:{
+                id:id
+            }
+        })
+        if(singelproduct){
+            console.log("entererd");
+            console.log(singelproduct);
+            return singelproduct.dataValues
+        }else{
+            throw new Error("product not found")
+        }
+    }
+    catch(e){
+        console.log("error ocuurerd");
+        console.error(e);
+        throw e
+    }
+    
+}
 
-module.exports = { createNewUser, findIfUserExists, findUser, confirmPassword,allProducts,createProduct };
+
+module.exports = { createNewUser, findIfUserExists, findUser, confirmPassword,allProducts,createProduct,getSingleProductHelper };

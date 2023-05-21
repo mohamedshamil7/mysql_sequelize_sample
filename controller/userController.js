@@ -5,7 +5,8 @@ const {
   findUser,
   confirmPassword,
   allProducts,
-  createProduct
+  createProduct,
+  getSingleProductHelper
 } = require("../model/userHelper");
 
 const userLogin = async (req, res) => {
@@ -91,25 +92,44 @@ const createUser = async (req, res) => {
 const getAllProducts= async(req,res)=>{
     try {
         const product = await allProducts()
-        // if (product){res.send(product)}
+
+        res.status(200).send(JSON.parse(product))
 
     }
     catch(e){
         console.log(e);
+        res.status(500).send(e)
+
     }
 }
 
 const newProduct= async(req,res)=>{
     try {
         const {name,price}= req.body
-        const product = await createProduct(name,price)
+        const newproduct = await createProduct(name,price)
         
-        res.status(201).send(product)
+        res.status(201).send(newproduct)
     }
     catch(e){
+        console.log(e);
         res.status(400).send(e)
     }
 }
 
+const getProductWithId= async(req,res)=>{
+    try {
+        const product = await getSingleProductHelper(req.params.id)
+        res.status(200).send(product)
+    }
+    catch(e){
+        if (e instanceof Error) {
+            const errorMessage = e.message;
+            console.log("error:", errorMessage);
+            return res.status(404).send(errorMessage);
+          }
+       return  res.status(404).send(e)
+    }
+}
 
-module.exports = { userLogin, createUser, getAllProducts,newProduct };
+
+module.exports = { userLogin, createUser, getAllProducts,newProduct,getProductWithId };

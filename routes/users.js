@@ -5,7 +5,8 @@ let {
   userLogin,
   createUser ,
   getAllProducts,
-  newProduct
+  newProduct,
+  getProductWithId
 
 } = require("../controller/userController");
 
@@ -13,6 +14,7 @@ let {
 router.post('/signup',createUser );
 router.post('/login',userLogin );
 router.get('/products',getAllProducts );
+router.get('/products/:id',getProductWithId );
 router.post('/products',newProduct);
 
 module.exports = router;
