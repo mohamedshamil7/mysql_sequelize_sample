@@ -40,7 +40,8 @@ server.on('listening', onListening);
 
 function onError(error) {
   if (error.syscall !== 'listen') {
-    throw error;
+    // throw error;
+    console.log(error);
   }
 
   var bind = typeof port === 'string'
@@ -83,7 +84,7 @@ app.use('/', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  console.log(createError(404));
 });
 
 // error handler

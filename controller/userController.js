@@ -6,7 +6,9 @@ const {
   confirmPassword,
   allProducts,
   createProduct,
-  getSingleProductHelper
+  getSingleProductHelper,
+//   createNewOrder,
+//   getallOrders
 } = require("../model/userHelper");
 
 const userLogin = async (req, res) => {
@@ -129,7 +131,30 @@ const getProductWithId= async(req,res)=>{
           }
        return  res.status(404).send(e)
     }
-}
+} 
+
+// const newOrder= async(req,res)=>{
+//     try {
+//         const {productId} = req.body
+//         const order = await createNewOrder(productId)
+//         res.status(201).send(order)
+//     }
+//     catch(e){
+//         // console.log(e);
+//         res.status(400).send(e)
+//     }
+// }
+
+// const getOrders=async(req,res)=>{
+//     try {
+//         const orders = await getallOrders()
+//         if(orders) res.status(200).send(JSON.parse(orders))
+//     }
+//     catch(e){
+//         console.log(e);
+//         res.status(400).send(e)
+//     }
+// }
 
 
 module.exports = { userLogin, createUser, getAllProducts,newProduct,getProductWithId };
